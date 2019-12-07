@@ -16,12 +16,13 @@ defmodule FinancialSystem do
     :world
   end
 
-
   @doc """
   Create a new account
   ## Examples 
+      FinancialSystem.create_account("Vitor Silva", "vitor@gmail.com", "BRL", 500)
+      {:ok, %Account{ amount: 500, currency: "BRL", email: "vitor@gmail.com", name: "Vitor Silva" }}
   """
-  def create_account(name, email, currency \\ "BR", amount \\ 0) do
+  def create_account(name, email, currency \\ "BRL", amount \\ 0) do
     if byte_size(name) > 0 &&
          byte_size(email) > 0 &&
          byte_size(currency) > 0 &&
@@ -35,6 +36,11 @@ defmodule FinancialSystem do
   @doc """
   Check if an account has funds enough 
   ## Examples
+      {:ok, account} = FinancialSystem.create_account("Vitor Silva", "vitor@gmail.com", "BRL", 500)
+      {:ok, %Account{ amount: 500, currency: "BRL", email: "vitor@gmail.com", name: "Vitor Silva" }}
+
+      FinancialSystem.has_funds?(account, 450)
+      true 
   """
   def has_funds?(%Account{} = account, value) do
     account.amount >= value
