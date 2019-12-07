@@ -26,7 +26,7 @@ defmodule FinancialSystem do
          byte_size(email) > 0 &&
          byte_size(currency) > 0 &&
          is_number(amount) do
-      {:ok, %Account{name: name, email: email, currency: currency, amount: 0}}
+      {:ok, %Account{name: name, email: email, currency: currency, amount: amount}}
     else
       raise ArgumentError, message: "the argument value is invalid"
     end
