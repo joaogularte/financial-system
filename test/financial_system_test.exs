@@ -9,10 +9,6 @@ defmodule FinancialSystemTest do
     %{account: account}
   end
 
-  test "greets the world" do
-    assert FinancialSystem.hello() == :world
-  end
-
   test "create an account" do
     assert FinancialSystem.create_account("João Vitor", "joao@gmail.com", "BRL")
   end

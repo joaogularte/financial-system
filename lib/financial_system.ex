@@ -4,19 +4,6 @@ defmodule FinancialSystem do
   """
 
   @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> FinancialSystem.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
-
-  @doc """
   Create a new account
   ## Examples 
       FinancialSystem.create_account("Vitor Silva", "vitor@gmail.com", "BRL", 500)
