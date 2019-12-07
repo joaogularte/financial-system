@@ -31,4 +31,12 @@ defmodule FinancialSystem do
       raise ArgumentError, message: "the argument value is invalid"
     end
   end
+
+  @doc """
+  Check if an account has funds enough 
+  ## Examples
+  """
+  def has_funds?(%Account{} = account, value) do
+    account.amount >= value
+  end
 end
