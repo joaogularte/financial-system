@@ -3,7 +3,9 @@ defmodule FinancialSystemTest do
   doctest FinancialSystem
 
   setup do
-    {:ok, account} = FinancialSystem.create_account("Carlos Eduardo Souza", "carlos@gmail", "BRL", 500)
+    {:ok, account} =
+      FinancialSystem.create_account("Carlos Eduardo Souza", "carlos@gmail", "BRL", 500)
+
     %{account: account}
   end
 
@@ -12,7 +14,7 @@ defmodule FinancialSystemTest do
   end
 
   test "create an account" do
-    assert FinancialSystem.create_account("João Vitor", "joao@gmail.com", "BRL") 
+    assert FinancialSystem.create_account("João Vitor", "joao@gmail.com", "BRL")
   end
 
   test "check if account has funds", %{account: account} do
