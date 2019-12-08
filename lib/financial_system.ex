@@ -22,7 +22,7 @@ defmodule FinancialSystem do
   end
 
   @doc """
-  Check if an account has funds enough 
+  Check if the account has funds enough 
   ## Examples
       {:ok, account} = FinancialSystem.create_account("Vitor Silva", "vitor@gmail.com", "BRL", 500)
       {:ok, %Account{ amount: 500, currency: "BRL", email: "vitor@gmail.com", name: "Vitor Silva" }}
@@ -34,5 +34,24 @@ defmodule FinancialSystem do
           boolean()
   def has_funds?(%Account{} = account, value) do
     account.amount >= value
+  end
+
+  @doc """
+  Make a deposit into the account
+  ## Examples
+      account = FinancialSystem.create_account("Marcelo Souza", "marcelo@gmail.com", "BRL", 100)
+      %Account{ amount: 100, currency: "BRL", email: "marcelo@gmail.com", name: "Marcelo Souza" }
+      FinancialSystem.deposit(account, 60)
+      %Account{ amount: 160, currency: "BRL", email: "marcelo@gmail.com", name: "Marcelo Souza" }
+  """
+  @spec deposit(Account.t(), number()) :: Account.t()
+  def deposit(%Account{} = account, value) when is_number(value) and value > 0 do
+    do_deposit(account, value)
+  end
+
+  @spec do_deposit(Account.t(), number()) :: Account.t()
+  defp do_deposit(%Account{} = account, value) do
+    amount = account.amount + value
+    %{account | amount: amount}
   end
 end
