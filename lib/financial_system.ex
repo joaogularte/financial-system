@@ -48,7 +48,7 @@ defmodule FinancialSystem do
       %Account{ amount: 160, currency: "BRL", email: "marcelo@gmail.com", name: "Marcelo Souza" }
   """
   @spec deposit(Account.t(), number()) :: Account.t()
-  def deposit(%Account{} = account, value) when is_number(value) and value > 0 do
+  def deposit(%Account{} = account, value) when is_positive(value) do
     do_deposit(account, value)
   end
 
