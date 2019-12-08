@@ -12,3 +12,7 @@ Projeto desenvolvido com a linguagem de programação Elixir para o desafio da S
 
 ## Testes
 
+## Controle de Qualidade
+
+* Integração Contínua - [CircleCI](https://circleci.com/gh/joaogularte/financial-system)
+* Teste de cobertura - [ExCoveralls](https://coveralls.io/github/joaogularte/financial-system?branch=master)
