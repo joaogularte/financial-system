@@ -9,6 +9,7 @@ defmodule FinancialSystem do
       FinancialSystem.create_account("Vitor Silva", "vitor@gmail.com", "BRL", 500)
       {:ok, %Account{ amount: 500, currency: "BRL", email: "vitor@gmail.com", name: "Vitor Silva" }}
   """
+  @spec create_account(String.t(), String.t(), String.t(), number()) :: %Account{}
   def create_account(name, email, currency \\ "BRL", amount \\ 0) do
     if byte_size(name) > 0 &&
          byte_size(email) > 0 &&
@@ -29,6 +30,8 @@ defmodule FinancialSystem do
       FinancialSystem.has_funds?(account, 450)
       true 
   """
+  @spec has_funds?(%Account{name: String.t(), email: String.t(), amount: String.t()}, number()) ::
+          boolean()
   def has_funds?(%Account{} = account, value) do
     account.amount >= value
   end
