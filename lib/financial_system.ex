@@ -36,6 +36,9 @@ defmodule FinancialSystem do
     account.amount >= value
   end
 
+  @spec is_positive(number()) :: boolean()
+  defguardp is_positive(value) when is_number(value) and value > 0
+
   @doc """
   Make a deposit into the account
   ## Examples
@@ -53,5 +56,13 @@ defmodule FinancialSystem do
   defp do_deposit(%Account{} = account, value) do
     amount = account.amount + value
     %{account | amount: amount}
+  end
+
+  def debit(%Account{} = account, value) do
+    
+  end
+
+  defp do_debit do
+    
   end
 end
