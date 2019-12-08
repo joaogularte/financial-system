@@ -58,11 +58,26 @@ defmodule FinancialSystem do
     %{account | amount: amount}
   end
 
-  def debit(%Account{} = account, value) do
-    
+  @doc """
+  Make a debit into the account
+  ## Examples
+    account = FinancialSystem.create_account("Marcelo Souza", "marcelo@gmail.com", "BRL", 100)
+    %Account{ amount: 100, currency: "BRL", email: "marcelo@gmail.com", name: "Marcelo Souza" }
+    FinancialSystem.debit(account, 60)
+    %Account{ amount: 40, currency: "BRL", email: "marcelo@gmail.com", name: "Marcelo Souza" }
+  """
+  @spec debit(Account.t(), number()) :: Account.t()
+  def debit(%Account{} = account, value) when is_positive(value) do
+    if has_funds?(account, value) do
+      do_debit(account, value)
+    else
+      raise "account with insuficient funds"
+    end
   end
 
-  defp do_debit do
-    
+  @spec do_debit(Account.t(), number()) :: Account.t()
+  defp do_debit(%Account{} = account, value) do
+    amount = account.amount - value
+    %{account | amount: amount}
   end
 end

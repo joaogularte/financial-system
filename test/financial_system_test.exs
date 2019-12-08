@@ -24,4 +24,17 @@ defmodule FinancialSystemTest do
              name: "Carlos Eduardo Souza"
            }
   end
+
+  test "User should be able to debit money into the account", %{account: account} do
+    assert FinancialSystem.debit(account, 50) == %Account{
+      amount: 450,
+      currency: "BRL",
+      email: "carlos@gmail",
+      name: "Carlos Eduardo Souza"
+    }
+  end
+
+  test "User should not be able to debit money into the account with insuficient funds", %{account: account} do
+    assert_raise RuntimeError, fn -> FinancialSystem.debit(account, 501) end
+  end
 end
