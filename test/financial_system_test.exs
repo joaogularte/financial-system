@@ -63,4 +63,11 @@ defmodule FinancialSystemTest do
 
     assert expect == FinancialSystem.transfer(from_account, to_account, 50)
   end
+
+  test "User should not be able to transfer if not enough money avaiable on the account", %{
+    account1: from_account,
+    account2: to_account
+  } do
+    assert_raise RuntimeError, fn -> FinancialSystem.transfer(from_account, to_account, 600) end
+  end
 end
