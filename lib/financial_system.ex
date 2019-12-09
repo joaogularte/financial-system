@@ -61,10 +61,10 @@ defmodule FinancialSystem do
   @doc """
   Make a debit into the account
   ## Examples
-    account = FinancialSystem.create_account("Marcelo Souza", "marcelo@gmail.com", "BRL", 100)
-    %Account{ amount: 100, currency: "BRL", email: "marcelo@gmail.com", name: "Marcelo Souza" }
-    FinancialSystem.debit(account, 60)
-    %Account{ amount: 40, currency: "BRL", email: "marcelo@gmail.com", name: "Marcelo Souza" }
+      account = FinancialSystem.create_account("Marcelo Souza", "marcelo@gmail.com", "BRL", 100)
+      %Account{ amount: 100, currency: "BRL", email: "marcelo@gmail.com", name: "Marcelo Souza" }
+      FinancialSystem.debit(account, 60)
+      %Account{ amount: 40, currency: "BRL", email: "marcelo@gmail.com", name: "Marcelo Souza" }
   """
   @spec debit(Account.t(), number()) :: Account.t()
   def debit(%Account{} = account, value) when is_positive(value) do
@@ -79,5 +79,26 @@ defmodule FinancialSystem do
   defp do_debit(%Account{} = account, value) do
     amount = account.amount - value
     %{account | amount: amount}
+  end
+
+  @doc """
+  Make money transfer between two accounts
+  ## Examples
+      account1 = FinancialSystem.create_account("Marcelo Souza", "marcelo@gmail.com", "BRL", 100)
+      account2 = FinancialSystem.create_account("Pedro Souza", "pedro@gmail.com", "BRL", 100)
+
+      FinancialSystem.transfer(account1, account2, 50)
+      %{from_account:  %Account{ amount: 50, currency: "BRL", email: "marcelo@gmail.com", name: "Marcelo Souza" },
+      to_account:  %Account{ amount: 150, currency: "BRL", email: "pedro@gmail.com", name: "Pedro Souza" }}
+  """
+  @spec transfer(Account.t(), Account.t(), number) :: %{
+          from_account: Account.t(),
+          to_account: Account.t()
+        }
+  def transfer(%Account{} = from_account, %Account{} = to_account, value)
+      when is_positive(value) do
+    debited_account = debit(from_account, value)
+    deposited_account = deposit(to_account, value)
+    %{from_account: debited_account, to_account: deposited_account}
   end
 end
