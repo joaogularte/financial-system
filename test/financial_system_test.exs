@@ -28,6 +28,10 @@ defmodule FinancialSystemTest do
            }
   end
 
+  test "User should not be able to deposit negative values into the account", %{account1: account} do
+    assert_raise FunctionClauseError, fn -> FinancialSystem.deposit(account, -50) end
+  end
+
   test "User should be able to debit money into the account", %{account1: account} do
     assert FinancialSystem.debit(account, 50) == %Account{
              amount: 450,
@@ -103,5 +107,4 @@ defmodule FinancialSystemTest do
 
     assert_raise ArgumentError, fn -> FinancialSystem.split(account1, accounts_list, 200) end
   end
-  
 end
