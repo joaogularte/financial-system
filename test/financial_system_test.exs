@@ -84,4 +84,18 @@ defmodule FinancialSystemTest do
 
     assert FinancialSystem.split(account1, accounts_list, 200)
   end
+
+  test "A transfer cannot be splitted if a wrong percentage was passed as parameter", %{
+    account1: account1,
+    account2: account2,
+    account3: account3
+  } do
+    accounts_list = [
+      %{to_account: account2, percentage: 60},
+      %{to_account: account3, percentage: 50}
+    ]
+
+    assert_raise ArgumentError, fn -> FinancialSystem.split(account1, accounts_list, 200) end
+  end
+  
 end
