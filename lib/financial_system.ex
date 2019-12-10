@@ -101,4 +101,20 @@ defmodule FinancialSystem do
     deposited_account = deposit(to_account, value)
     %{from_account: debited_account, to_account: deposited_account}
   end
+  @doc """
+  Check if the sum of accounts percentage list is equal 100
+  ## Examples
+      account1 = FinancialSystem.create_account("Marcelo Souza", "marcelo@gmail.com", "BRL", 200)
+      account2 = FinancialSystem.create_account("Pedro Souza", "pedro@gmail.com", "BRL", 100)
+
+      accounts_list = [%{to_account: account1, percentage: 70}, %{to_account: account2, percentage: 30}]
+      FinancialSystem.complete_percentage?(accouns_list)
+      true
+  """
+  @spec complete_percentage?(list()) :: boolean() 
+  def complete_percentage?(accounts_list) when is_list(accounts_list) do
+    Enum.reduce(accounts_list, 0, fn account, total_percent ->
+      account[:percentage] + total_percent
+    end) == 100
+  end
 end
