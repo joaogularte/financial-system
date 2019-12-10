@@ -17,7 +17,7 @@ defmodule FinancialSystem do
          is_number(amount) do
       %Account{name: name, email: email, currency: currency, amount: amount}
     else
-      raise ArgumentError, message: "the argument value is invalid"
+      raise(ArgumentError, message: "the argument value is invalid")
     end
   end
 
@@ -124,7 +124,7 @@ defmodule FinancialSystem do
     if complete_percentage?(accounts_list) do
       do_split(from_account, accounts_list, value)
     else
-      raise "accounts with percentage incorrect"
+      raise(ArgumentError, message: "accounts with percentage incorrect")
     end
   end
 
