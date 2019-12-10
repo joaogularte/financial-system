@@ -101,6 +101,11 @@ defmodule FinancialSystem do
     deposited_account = deposit(to_account, value)
     %{from_account: debited_account, to_account: deposited_account}
   end
+  @spec percent_number(number(), number()) :: number()
+  defp percent_number(number, percent) when is_positive(number) and is_positive(percent) do
+    div(number * percent, 100)
+  end
+
   @doc """
   Check if the sum of accounts percentage list is equal 100
   ## Examples
