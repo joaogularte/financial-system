@@ -6,7 +6,8 @@ defmodule FinancialSystemTest do
     [
       account1:
         FinancialSystem.create_account("Carlos Eduardo Souza", "carlos@gmail", "BRL", 500),
-      account2: FinancialSystem.create_account("João Ricardo Souza", "jr@gmail", "BRL", 100)
+      account2: FinancialSystem.create_account("João Ricardo Souza", "jr@gmail", "BRL", 100),
+      account3: FinancialSystem.create_account("Ricardo Silva", "ricardo@gmail", "BRL", 200)
     ]
   end
 
@@ -69,5 +70,18 @@ defmodule FinancialSystemTest do
     account2: to_account
   } do
     assert_raise RuntimeError, fn -> FinancialSystem.transfer(from_account, to_account, 600) end
+  end
+
+  test "A transfer can be splitted between 2 or more accounts", %{
+    account1: account1,
+    account2: account2,
+    account3: account3
+  } do
+    accounts_list = [
+      %{to_account: account2, percentage: 50},
+      %{to_account: account3, percentage: 50}
+    ]
+
+    assert FinancialSystem.split(account1, accounts_list, 200)
   end
 end
