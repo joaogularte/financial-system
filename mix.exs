@@ -32,7 +32,7 @@ defmodule FinancialSystem.MixProject do
     [
       {:excoveralls, "~> 0.10", only: :test},
       {:tesla, "~> 1.3.0"},
-      {:jason, "~> 1.1"}
+      {:poison, "~> 3.1"}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]
