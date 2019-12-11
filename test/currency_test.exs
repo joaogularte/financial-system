@@ -9,4 +9,9 @@ defmodule CurrencyTest do
   test "Get currency rate from server" do
     assert Currency.rate()
   end
+
+  test "Check if currency is in compliance with ISO 4217" do
+      assert Currency.valid?("SEK") == true
+      assert Currency.valid?("VNT") == false
+  end
 end

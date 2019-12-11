@@ -59,4 +59,13 @@ defmodule Currency do
         {:error}
     end
   end
+  @doc """
+  Check if currency is valid
+  ## Examples
+      Currency.valid?("BRL") 
+  """
+  @spec valid?(String.t()) :: boolean()
+  def valid?(currency) when byte_size(currency) > 0 do
+    list() |> Map.has_key?(currency)
+  end
 end
