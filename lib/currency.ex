@@ -24,9 +24,14 @@ defmodule Currency do
   end
   @spec do_list() :: map()
   defp do_list() do
-    case get("list?access_key=#{@access_key}") do
-      {:ok, response} -> Agent.update(__MODULE__, fn state -> Poison.decode!(response.body)["currencies"] end)
-      _error -> {:error}
+    case get("/list?access_key=#{@access_key}") do
+      {:ok, response} ->
+        Agent.update(__MODULE__, fn state -> Poison.decode!(response.body)["currencies"] end)
+
+      _error ->
+        {:error}
+    end
+  end
     end
   end
 end
