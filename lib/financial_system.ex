@@ -168,4 +168,19 @@ defmodule FinancialSystem do
       account[:percentage] + total_percent
     end) == 100
   end
+
+  def exchange(from_currency, to_currency, value)
+      when is_positive(value) and byte_size(from_currency) > 0 and byte_size(to_currency) do
+    cond do
+      Currency.valid?(from_currency) == false -> raise ArgumentError, "from_currency is invalid"
+      Currency.valid?(to_currency) == false -> raise ArgumentError, "to_currency is invalid"
+      from_currency == to_currency -> raise ArgumentError, "from_currency is equal to to_currency"
+      true -> Currency.rate() |> do_exchange(from_currency, to_currency, value)
+    end
+    
+  end
+
+  def do_exchange(rate_list, from_currency, to_currency, value) do
+    value |> div(rate_list["USD#{to_currency}"]) |> * rate_list["USD#{from_currency}"] 
+  end
 end
