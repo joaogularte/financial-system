@@ -59,6 +59,7 @@ defmodule Currency do
         {:error}
     end
   end
+
   @doc """
   Check if currency is valid
   ## Examples
