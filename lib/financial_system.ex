@@ -181,6 +181,7 @@ defmodule FinancialSystem do
   end
 
   def do_exchange(rate_list, from_currency, to_currency, value) do
-    value |> div(rate_list["USD#{to_currency}"]) |> * rate_list["USD#{from_currency}"] 
+    #value / rate desejada * rate atual
+    value |> div(rate_list["USD#{to_currency}"]) 
   end
 end
