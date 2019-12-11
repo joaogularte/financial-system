@@ -177,11 +177,13 @@ defmodule FinancialSystem do
       from_currency == to_currency -> raise ArgumentError, "from_currency is equal to to_currency"
       true -> Currency.rate() |> do_exchange(from_currency, to_currency, value)
     end
-    
   end
 
-  def do_exchange(rate_list, from_currency, to_currency, value) do
-    #value / rate desejada * rate atual
-    value |> div(rate_list["USD#{to_currency}"]) 
+  def do_exchange(rates, from_currency, to_currency, value) do
+    value
+    |> Decimal.cast()
+    |> Decimal.div(Decimal.cast(rates["USD#{to_currency}"]))
+    |> Decimal.mult(Decimal.cast(rates["USD#{from_currency}"]))
+    |> Decimal.round(2)
   end
 end
