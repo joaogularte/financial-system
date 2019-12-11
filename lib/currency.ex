@@ -1,6 +1,7 @@
 defmodule Currency do
   @moduledoc """
-
+  Currency module has validation, verification and rating about currencies in compliance with ISO4217. 
+  Currencylayer API(https://currencylayer.com/) is consult in order to get informations about currency and rate.
   """
   use Agent
   use Tesla
