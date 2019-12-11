@@ -77,7 +77,7 @@ defmodule FinancialSystemTest do
   end
 
   test "A transfer should be cancelled if an error occurs", %{
-    account1: from_account,
+    account1: from_account
   } do
     assert_raise FunctionClauseError, fn -> FinancialSystem.transfer(from_account, nil, 600) end
   end
