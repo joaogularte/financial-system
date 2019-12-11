@@ -11,7 +11,7 @@ defmodule CurrencyTest do
   end
 
   test "Check if currency is in compliance with ISO 4217" do
-      assert Currency.valid?("SEK") == true
-      assert Currency.valid?("VNT") == false
+    assert Currency.valid?("SEK") == true
+    assert Currency.valid?("VNT") == false
   end
 end
