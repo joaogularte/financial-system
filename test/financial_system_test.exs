@@ -1,5 +1,5 @@
 defmodule FinancialSystemTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case 
   doctest FinancialSystem
 
   setup do
