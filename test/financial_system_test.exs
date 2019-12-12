@@ -39,6 +39,11 @@ defmodule FinancialSystemTest do
   } do
     assert FinancialSystem.deposit(account, "USD", 50)
   end
+  test "User should not be able to deposit money into the account with invalid currency", %{
+    account1: account
+  } do
+    assert_raise ArgumentError, fn -> FinancialSystem.deposit(account, "AAA", 50) end
+  end
   test "User should not be able to deposit negative values into the account", %{account1: account} do
     assert_raise FunctionClauseError, fn -> FinancialSystem.deposit(account, -50) end
   end
