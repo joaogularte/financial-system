@@ -21,7 +21,7 @@ defmodule FinancialSystemTest do
 
   test "User should be able to deposit money into the account", %{account1: account} do
     assert FinancialSystem.deposit(account, 50) == %Account{
-             amount: 550,
+             amount: Decimal.cast(550),
              currency: "BRL",
              email: "carlos@gmail",
              name: "Carlos Eduardo Souza"
@@ -34,7 +34,7 @@ defmodule FinancialSystemTest do
 
   test "User should be able to debit money into the account", %{account1: account} do
     assert FinancialSystem.debit(account, 50) == %Account{
-             amount: 450,
+             amount: Decimal.cast(450),
              currency: "BRL",
              email: "carlos@gmail",
              name: "Carlos Eduardo Souza"
@@ -44,7 +44,7 @@ defmodule FinancialSystemTest do
   test "User should not be able to debit money into the account with insuficient funds", %{
     account1: account
   } do
-    assert_raise RuntimeError, fn -> FinancialSystem.debit(account, 501) end
+    assert_raise RuntimeError, fn -> IO.inspect FinancialSystem.debit(account, 600) end
   end
 
   test "User should be able to transfer money to another account", %{
@@ -53,13 +53,13 @@ defmodule FinancialSystemTest do
   } do
     expect = %{
       from_account: %Account{
-        amount: 450,
+        amount: Decimal.cast(450),
         currency: "BRL",
         email: "carlos@gmail",
         name: "Carlos Eduardo Souza"
       },
       to_account: %Account{
-        amount: 150,
+        amount: Decimal.cast(150),
         currency: "BRL",
         email: "jr@gmail",
         name: "João Ricardo Souza"
