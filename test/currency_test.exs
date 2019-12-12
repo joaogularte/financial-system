@@ -2,11 +2,11 @@ defmodule CurrencyTest do
   use ExUnit.Case
   doctest Currency
 
-  test "Get currency list in complience with ISO 4217 from server" do
+  test "Currency should be in complience with ISO 4217 from server" do
     assert Currency.list()
   end
 
-  test "Get currency rate from server" do
+  test "Currency should be to get currency rate from server" do
     assert Currency.rate()
   end
 
