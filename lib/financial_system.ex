@@ -15,7 +15,12 @@ defmodule FinancialSystem do
          true <- byte_size(email) > 0,
          true <- Currency.valid?(currency),
          true <- is_number(amount) do
-      %Account{name: name, email: email, currency: String.upcase(currency), amount: Decimal.cast(amount)}
+      %Account{
+        name: name,
+        email: email,
+        currency: String.upcase(currency),
+        amount: Decimal.cast(amount)
+      }
     else
       _error -> raise(ArgumentError, message: "the argument value is invalid")
     end
