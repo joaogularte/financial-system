@@ -85,7 +85,7 @@ defmodule FinancialSystem do
       FinancialSystem.debit(account, "BRL", 60)
       %Account{ amount: 40, currency: "BRL", email: "marcelo@gmail.com", name: "Marcelo Souza" }
   """
-  @spec debit(Account.t(), String.t(), number()) :: Account.t()
+  @spec debit(Account.t(), String.t(), number()) :: Account.t() | ArgumentError
   def debit(%Account{} = account, currency, value) when is_positive(value) do
     if Currency.valid?(currency) do
       do_debit(account, account.currency == currency, currency, value)
@@ -94,7 +94,7 @@ defmodule FinancialSystem do
     end
   end
 
-  @spec do_debit(Account.t(), true, String.t(), number()) :: Account.t()
+  @spec do_debit(Account.t(), true, String.t(), number()) :: Account.t() | FunctionClauseError
   defp do_debit(%Account{} = account, _same_currency = true, _currency, value) do
     case has_funds?(account, value) do
       true -> %{account | amount: Decimal.sub(account.amount, value)}
@@ -102,7 +102,7 @@ defmodule FinancialSystem do
     end
   end
 
-  @spec do_debit(Account.t(), false, String.t(), number()) :: Account.t()
+  @spec do_debit(Account.t(), false, String.t(), number()) :: Account.t() | FunctionClauseError
   defp do_debit(%Account{} = account, _same_currency = false, currency, value) do
     with value <- exchange(currency, account.currency, value),
          true <- has_funds?(account, value) do
@@ -150,7 +150,7 @@ defmodule FinancialSystem do
   @spec split(Account.t(), list(), number()) :: %{
           from_account: Account.t(),
           accounts_list: list()
-        }
+        } | ArgumentError
   def split(%Account{} = from_account, accounts_list, value)
       when is_positive(value) and is_list(accounts_list) do
     if complete_percentage?(accounts_list) do
