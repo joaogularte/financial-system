@@ -11,13 +11,13 @@ defmodule FinancialSystem do
   """
   @spec create_account(String.t(), String.t(), String.t(), number()) :: %Account{}
   def create_account(name, email, currency \\ "BRL", amount \\ 0) do
-    if byte_size(name) > 0 &&
-         byte_size(email) > 0 &&
-         byte_size(currency) > 0 &&
-         is_number(amount) do
-      %Account{name: name, email: email, currency: currency, amount: amount}
+    with true <- byte_size(name) > 0,
+         true <- byte_size(email) > 0,
+         true <- Currency.valid?(currency),
+         true <- is_number(amount) do
+      %Account{name: name, email: email, currency: String.upcase(currency), amount: Decimal.cast(amount)}
     else
-      raise(ArgumentError, message: "the argument value is invalid")
+      _error -> raise(ArgumentError, message: "the argument value is invalid")
     end
   end
 
