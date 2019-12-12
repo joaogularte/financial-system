@@ -68,6 +68,13 @@ defmodule FinancialSystemTest do
   } do
     assert_raise RuntimeError, fn -> FinancialSystem.debit(account, "BRL", 600) end
   end
+
+  test "User should not be able to debit money into the account with insuficient funds in different currency", %{
+    account1: account
+  } do
+    assert_raise RuntimeError, fn -> FinancialSystem.debit(account, "USD", 600) end
+  end
+
   end
 
   test "User should be able to transfer money to another account", %{
