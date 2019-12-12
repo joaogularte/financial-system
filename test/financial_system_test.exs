@@ -11,11 +11,12 @@ defmodule FinancialSystemTest do
     ]
   end
 
-  test "Create an account" do
+  test "User should be able to create an account in any currency" do
     assert FinancialSystem.create_account("João Vitor", "joao@gmail.com", "BRL")
+    assert FinancialSystem.create_account("Robson", "robson@gmail.com", "COP")
   end
 
-  test "Can not create an account without correct informations" do
+  test "User should not be able to create an account with incorrect informations" do
     assert_raise ArgumentError, fn ->
       FinancialSystem.create_account("João Vitor", "joao@gmail.com", "BRL", "AAA")
     end
@@ -34,7 +35,7 @@ defmodule FinancialSystemTest do
            }
   end
 
-  test "User should be able to deposit money into the account with different currency", %{
+  test "User should be able to deposit money into the foreign account", %{
     account1: account
   } do
     assert FinancialSystem.deposit(account, "USD", 50)
@@ -59,7 +60,7 @@ defmodule FinancialSystemTest do
            }
   end
 
-  test "User should be able to debit money into the account with different currency", %{
+  test "User should be able to debit money into the foreign account", %{
     account1: account
   } do
     assert FinancialSystem.debit(account, "USD", 15)
@@ -71,7 +72,7 @@ defmodule FinancialSystemTest do
     assert_raise RuntimeError, fn -> FinancialSystem.debit(account, "BRL", 600) end
   end
 
-  test "User should not be able to debit money into the account with insuficient funds in different currency",
+  test "User should not be able to debit money into the foreign account with insuficient funds",
        %{
          account1: account
        } do
