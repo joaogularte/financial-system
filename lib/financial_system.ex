@@ -38,7 +38,7 @@ defmodule FinancialSystem do
   @spec has_funds?(%Account{name: String.t(), email: String.t(), amount: String.t()}, number()) ::
           boolean()
   def has_funds?(%Account{} = account, value) do
-    account.amount >= Decimal.cast(value)
+    Enum.member?([:gt, :eq], Decimal.cmp(account.amount, value))
   end
 
   @spec is_positive(number()) :: boolean()
@@ -52,14 +52,28 @@ defmodule FinancialSystem do
       FinancialSystem.deposit(account, 60)
       %Account{ amount: 160, currency: "BRL", email: "marcelo@gmail.com", name: "Marcelo Souza" }
   """
-  @spec deposit(Account.t(), number()) :: Account.t()
-  def deposit(%Account{} = account, value) when is_positive(value) do
-    do_deposit(account, value)
+  @spec deposit(Account.t(), String.t(), number()) :: Account.t() | ArgumentError
+  def deposit(%Account{} = account, currency, value)
+      when is_positive(value) and byte_size(currency) > 0 do
+    if Currency.valid?(currency) do
+      do_deposit(account, account.currency == currency, currency, value)
+    else
+      raise(ArgumentError, message: "currency invalid")
+    end
   end
 
-  @spec do_deposit(Account.t(), number()) :: Account.t()
-  defp do_deposit(%Account{} = account, value) do
+  @spec do_deposit(Account.t(), true, String.t(), number()) :: Account.t()
+  defp do_deposit(%Account{} = account, same_currency = true, currency, value) do
     amount = Decimal.add(account.amount, Decimal.cast(value))
+    %{account | amount: amount}
+  end
+
+  @spec do_deposit(Account.t(), false, String.t(), number()) :: Account.t()
+  defp do_deposit(%Account{} = account, same_currency = false, currency, value) do
+    amount =
+      exchange(currency, account.currency, value)
+      |> Decimal.add(account.amount)
+
     %{account | amount: amount}
   end
 
@@ -71,19 +85,32 @@ defmodule FinancialSystem do
       FinancialSystem.debit(account, 60)
       %Account{ amount: 40, currency: "BRL", email: "marcelo@gmail.com", name: "Marcelo Souza" }
   """
-  @spec debit(Account.t(), number()) :: Account.t()
-  def debit(%Account{} = account, value) when is_positive(value) do
-    if has_funds?(account, value) do
-      do_debit(account, value)
+  @spec debit(Account.t(), String.t(), number()) :: Account.t()
+  def debit(%Account{} = account, currency, value) when is_positive(value) do
+    if Currency.valid?(currency) do
+      do_debit(account, account.currency == currency, currency, value)
     else
-      raise "account with insuficient funds"
+      raise(ArgumentError, message: "currency invalid")
     end
   end
 
-  @spec do_debit(Account.t(), number()) :: Account.t()
-  defp do_debit(%Account{} = account, value) do
-    amount = Decimal.sub(account.amount, value)
-    %{account | amount: amount}
+  @spec do_debit(Account.t(), true, String.t(), number()) :: Account.t()
+  defp do_debit(%Account{} = account, same_currency = true, currency, value) do
+    case has_funds?(account, value) do
+      true -> %{account | amount: Decimal.sub(account.amount, value)}
+      false -> raise "account with insuficient funds"
+    end
+  end
+
+  @spec do_debit(Account.t(), false, String.t(), number()) :: Account.t()
+  defp do_debit(%Account{} = account, same_currency = false, currency, value) do
+    with value <- exchange(currency, account.currency, value),
+         true <- has_funds?(account, value) do
+      amount = Decimal.sub(account.amount, value)
+      %{account | amount: amount}
+    else
+      _error -> raise "account with insuficient funds"
+    end
   end
 
   @doc """
@@ -102,8 +129,8 @@ defmodule FinancialSystem do
         }
   def transfer(%Account{} = from_account, %Account{} = to_account, value)
       when is_positive(value) do
-    debited_account = debit(from_account, value)
-    deposited_account = deposit(to_account, value)
+    debited_account = debit(from_account, from_account.currency, value)
+    deposited_account = deposit(to_account, to_account.currency, value)
     %{from_account: debited_account, to_account: deposited_account}
   end
 
@@ -138,7 +165,7 @@ defmodule FinancialSystem do
           accounts_list: list()
         }
   defp do_split(%Account{} = from_account, accounts_list, value) do
-    debited_account = debit(from_account, value)
+    debited_account = debit(from_account, from_account.currency, value)
 
     deposited_accounts =
       Enum.map(
@@ -152,7 +179,7 @@ defmodule FinancialSystem do
             |> Decimal.round(2)
             |> Decimal.to_float()
 
-          deposit(account[:to_account], ratio)
+          deposit(account[:to_account], from_account.currency, ratio)
         end
       )
 

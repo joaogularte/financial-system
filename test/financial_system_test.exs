@@ -1,5 +1,5 @@
 defmodule FinancialSystemTest do
-  use ExUnit.Case 
+  use ExUnit.Case
   doctest FinancialSystem
 
   setup do
@@ -15,12 +15,18 @@ defmodule FinancialSystemTest do
     assert FinancialSystem.create_account("João Vitor", "joao@gmail.com", "BRL")
   end
 
+  test "Can not create an account without correct informations" do
+    assert_raise ArgumentError, fn ->
+      FinancialSystem.create_account("João Vitor", "joao@gmail.com", "BRL", "AAA")
+    end
+  end
+
   test "Check if account has funds", %{account1: account} do
     assert FinancialSystem.has_funds?(account, 200) == true
   end
 
   test "User should be able to deposit money into the account", %{account1: account} do
-    assert FinancialSystem.deposit(account, 50) == %Account{
+    assert FinancialSystem.deposit(account, "BRL", 50) == %Account{
              amount: Decimal.cast(550),
              currency: "BRL",
              email: "carlos@gmail",
@@ -28,12 +34,24 @@ defmodule FinancialSystemTest do
            }
   end
 
+  test "User should be able to deposit money into the account with different currency", %{
+    account1: account
+  } do
+    assert FinancialSystem.deposit(account, "USD", 50)
+  end
+
+  test "User should not be able to deposit money into the account with invalid currency", %{
+    account1: account
+  } do
+    assert_raise ArgumentError, fn -> FinancialSystem.deposit(account, "AAA", 50) end
+  end
+
   test "User should not be able to deposit negative values into the account", %{account1: account} do
-    assert_raise FunctionClauseError, fn -> FinancialSystem.deposit(account, -50) end
+    assert_raise FunctionClauseError, fn -> FinancialSystem.deposit(account, "BRL", -50) end
   end
 
   test "User should be able to debit money into the account", %{account1: account} do
-    assert FinancialSystem.debit(account, 50) == %Account{
+    assert FinancialSystem.debit(account, "BRL", 50) == %Account{
              amount: Decimal.cast(450),
              currency: "BRL",
              email: "carlos@gmail",
@@ -41,10 +59,29 @@ defmodule FinancialSystemTest do
            }
   end
 
+  test "User should be able to debit money into the account with different currency", %{
+    account1: account
+  } do
+    assert FinancialSystem.debit(account, "USD", 15)
+  end
+
   test "User should not be able to debit money into the account with insuficient funds", %{
     account1: account
   } do
-    assert_raise RuntimeError, fn -> IO.inspect FinancialSystem.debit(account, 600) end
+    assert_raise RuntimeError, fn -> FinancialSystem.debit(account, "BRL", 600) end
+  end
+
+  test "User should not be able to debit money into the account with insuficient funds in different currency",
+       %{
+         account1: account
+       } do
+    assert_raise RuntimeError, fn -> FinancialSystem.debit(account, "USD", 600) end
+  end
+
+  test "User should not be able to debit money into the account with invalid currency", %{
+    account1: account
+  } do
+    assert_raise ArgumentError, fn -> FinancialSystem.debit(account, "AAA", 50) end
   end
 
   test "User should be able to transfer money to another account", %{
