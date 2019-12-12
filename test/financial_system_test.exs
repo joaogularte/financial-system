@@ -1,5 +1,5 @@
 defmodule FinancialSystemTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case 
   doctest FinancialSystem
 
   setup do
@@ -77,7 +77,7 @@ defmodule FinancialSystemTest do
   end
 
   test "A transfer should be cancelled if an error occurs", %{
-    account1: from_account,
+    account1: from_account
   } do
     assert_raise FunctionClauseError, fn -> FinancialSystem.transfer(from_account, nil, 600) end
   end
@@ -106,5 +106,13 @@ defmodule FinancialSystemTest do
     ]
 
     assert_raise ArgumentError, fn -> FinancialSystem.split(account1, accounts_list, 200) end
+  end
+
+  test "User should be able to exchange money between two currencies" do
+    assert FinancialSystem.exchange("BRL", "USD", 50)
+  end
+
+  test "User should not be able to exchange money between invalid currencies" do
+    assert_raise ArgumentError, fn -> FinancialSystem.exchange("AAA", "USD", 50) end
   end
 end

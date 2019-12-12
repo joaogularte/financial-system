@@ -168,4 +168,29 @@ defmodule FinancialSystem do
       account[:percentage] + total_percent
     end) == 100
   end
+
+  @doc """
+  Exchanging between two different currencies 
+  ## Example
+      FinancialSystem.exchange("BRL", "USD", 10)
+  """
+  @spec exchange(String.t(), String.t(), number()) :: number() | ArgumentError
+  def exchange(from_currency, to_currency, value)
+      when is_positive(value) and byte_size(from_currency) > 0 and byte_size(to_currency) > 0 do
+    cond do
+      Currency.valid?(from_currency) == false -> raise ArgumentError, "from_currency is invalid"
+      Currency.valid?(to_currency) == false -> raise ArgumentError, "to_currency is invalid"
+      from_currency == to_currency -> raise ArgumentError, "from_currency is equal to to_currency"
+      true -> Currency.rate() |> do_exchange(from_currency, to_currency, value)
+    end
+  end
+
+  @spec do_exchange(list(), String.t(), String.t(), number()) :: number()
+  defp do_exchange(rates, from_currency, to_currency, value) do
+    value
+    |> Decimal.cast()
+    |> Decimal.div(Decimal.cast(rates["USD#{from_currency}"]))
+    |> Decimal.mult(Decimal.cast(rates["USD#{to_currency}"]))
+    |> Decimal.round(2)
+  end
 end

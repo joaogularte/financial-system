@@ -1,5 +1,5 @@
 defmodule CurrencyTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
   doctest Currency
 
   test "Get currency list in complience with ISO 4217 from server" do
