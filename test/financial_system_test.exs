@@ -34,7 +34,7 @@ defmodule FinancialSystemTest do
 
   test "User should be able to debit money into the account", %{account1: account} do
     assert FinancialSystem.debit(account, 50) == %Account{
-             amount: 450,
+             amount: Decimal.cast(450),
              currency: "BRL",
              email: "carlos@gmail",
              name: "Carlos Eduardo Souza"
