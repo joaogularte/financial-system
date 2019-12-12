@@ -59,6 +59,10 @@ defmodule FinancialSystemTest do
            }
   end
 
+  test "User should be able to debit money into the account with different currency", %{account1: account} do
+    assert FinancialSystem.debit(account, "USD", 15)
+  end
+
   test "User should not be able to debit money into the account with insuficient funds", %{
     account1: account
   } do
