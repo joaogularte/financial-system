@@ -77,7 +77,7 @@ defmodule FinancialSystem do
 
   @spec do_debit(Account.t(), number()) :: Account.t()
   defp do_debit(%Account{} = account, value) do
-    amount = account.amount - value
+    amount = Decimal.sub(account.amount, value)
     %{account | amount: amount}
   end
 
