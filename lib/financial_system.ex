@@ -1,6 +1,6 @@
 defmodule FinancialSystem do
   @moduledoc """
-  Documentation for FinancialSystem.
+  FinancialSystem module provides a bundle of financial operations like create account, debit, deposit, transfer, split and exchange. 
   """
 
   @doc """
@@ -9,7 +9,7 @@ defmodule FinancialSystem do
       FinancialSystem.create_account("Vitor Silva", "vitor@gmail.com", "BRL", 500)
       {:ok, %Account{ amount: 500, currency: "BRL", email: "vitor@gmail.com", name: "Vitor Silva" }}
   """
-  @spec create_account(String.t(), String.t(), String.t(), number()) :: %Account{}
+  @spec create_account(String.t(), String.t(), String.t(), number()) :: %Account{} | ArgumentError
   def create_account(name, email, currency \\ "BRL", amount \\ 0) do
     with true <- byte_size(name) > 0,
          true <- byte_size(email) > 0,
@@ -49,7 +49,7 @@ defmodule FinancialSystem do
   ## Examples
       account = FinancialSystem.create_account("Marcelo Souza", "marcelo@gmail.com", "BRL", 100)
       %Account{ amount: 100, currency: "BRL", email: "marcelo@gmail.com", name: "Marcelo Souza" }
-      FinancialSystem.deposit(account, 60)
+      FinancialSystem.deposit(account, "BRL", 60)
       %Account{ amount: 160, currency: "BRL", email: "marcelo@gmail.com", name: "Marcelo Souza" }
   """
   @spec deposit(Account.t(), String.t(), number()) :: Account.t() | ArgumentError
@@ -82,7 +82,7 @@ defmodule FinancialSystem do
   ## Examples
       account = FinancialSystem.create_account("Marcelo Souza", "marcelo@gmail.com", "BRL", 100)
       %Account{ amount: 100, currency: "BRL", email: "marcelo@gmail.com", name: "Marcelo Souza" }
-      FinancialSystem.debit(account, 60)
+      FinancialSystem.debit(account, "BRL", 60)
       %Account{ amount: 40, currency: "BRL", email: "marcelo@gmail.com", name: "Marcelo Souza" }
   """
   @spec debit(Account.t(), String.t(), number()) :: Account.t()
@@ -187,7 +187,7 @@ defmodule FinancialSystem do
   end
 
   @doc """
-  Check if the sum of accounts percentage list is equal 100
+  Check if the sum of accounts percentage is equal 100
   ## Examples
       account1 = FinancialSystem.create_account("Marcelo Souza", "marcelo@gmail.com", "BRL", 200)
       account2 = FinancialSystem.create_account("Pedro Souza", "pedro@gmail.com", "BRL", 100)
