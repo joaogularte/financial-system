@@ -47,26 +47,17 @@ defmodule FinancialSystem do
       FinancialSystem.deposit(account, 60)
       %Account{ amount: 160, currency: "BRL", email: "marcelo@gmail.com", name: "Marcelo Souza" }
   """
-  @spec deposit(Account.t(), String.t(), number()) :: Account.t()
-  def deposit(%Account{} = account, currency, value) when is_positive(value) do
-    if Currency.valid?(currency) do
-      do_deposit(account, account.currency == currency, currency ,value)
-    else
-      raise ArgumentError "currency invalid"
-    end
+  @spec deposit(Account.t(), number()) :: Account.t()
+  def deposit(%Account{} = account, value) when is_positive(value) do
+    do_deposit(account, value)
   end
 
-  @spec do_deposit(Account.t(), true, String.t(), number()) :: Account.t()
-  defp do_deposit(%Account{} = account, same_currency = true, String.t(), value) do
+  @spec do_deposit(Account.t(), number()) :: Account.t()
+  defp do_deposit(%Account{} = account, value) do
     amount = account.amount + value
     %{account | amount: amount}
   end
 
-  @spec do_deposit(Account.t(), false, String.t(), number()) :: Account.t()
-  defp do_deposit(%Account{} = account, same_currency = false, currency, value) do
-    amount = account.amount + exchange(currency, account.currency, value)
-    %{account | amount: amount}
-  end
   @doc """
   Make a debit into the account
   ## Examples
