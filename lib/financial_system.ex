@@ -117,7 +117,7 @@ defmodule FinancialSystem do
   def transfer(%Account{} = from_account, %Account{} = to_account, value)
       when is_positive(value) do
     debited_account = debit(from_account, value)
-    deposited_account = deposit(to_account, value)
+    deposited_account = deposit(to_account, "BRL", value)
     %{from_account: debited_account, to_account: deposited_account}
   end
 
@@ -166,7 +166,7 @@ defmodule FinancialSystem do
             |> Decimal.round(2)
             |> Decimal.to_float()
 
-          deposit(account[:to_account], ratio)
+          deposit(account[:to_account], "BRL", ratio)
         end
       )
 
