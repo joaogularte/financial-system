@@ -7,7 +7,7 @@ defmodule Currency do
   use Tesla
   plug(Tesla.Middleware.BaseUrl, "http://www.apilayer.net/api")
 
-  @access_key "272f531700cf18dcafcc40fd74b3559e"
+  @access_key "6da65783efc74e33a63a6fbd64f56487"
 
   @doc """
   Get list of currencies in complience with ISO 4217 through Currencylayer API
@@ -28,7 +28,7 @@ defmodule Currency do
   defp do_list() do
     case get("/list?access_key=#{@access_key}") do
       {:ok, response} ->
-        Agent.update(__MODULE__, fn state -> Poison.decode!(response.body)["currencies"] end)
+        Agent.update(__MODULE__, fn _state -> Poison.decode!(response.body)["currencies"] end)
 
       _error ->
         {:error}
@@ -54,7 +54,7 @@ defmodule Currency do
   defp do_rate() do
     case get("/live?access_key=#{@access_key}&format=1") do
       {:ok, response} ->
-        Agent.update(__MODULE__, fn state -> Poison.decode!(response.body)["quotes"] end)
+        Agent.update(__MODULE__, fn _state -> Poison.decode!(response.body)["quotes"] end)
 
       _error ->
         {:error}
