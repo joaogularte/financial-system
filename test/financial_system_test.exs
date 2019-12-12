@@ -107,4 +107,12 @@ defmodule FinancialSystemTest do
 
     assert_raise ArgumentError, fn -> FinancialSystem.split(account1, accounts_list, 200) end
   end
+
+  test "User should be able to exchange money between two currencies" do
+    assert FinancialSystem.exchange("BRL", "USD", 50)
+  end
+
+  test "User should not be able to exchange money between invalid currencies" do
+    assert_raise ArgumentError, fn -> FinancialSystem.exchange("AAA", "USD", 50) end
+  end
 end
