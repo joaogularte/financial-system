@@ -75,6 +75,10 @@ defmodule FinancialSystemTest do
     assert_raise RuntimeError, fn -> FinancialSystem.debit(account, "USD", 600) end
   end
 
+  test "User should not be able to debit money into the account with invalid currency", %{
+    account1: account
+  } do
+    assert_raise ArgumentError, fn -> FinancialSystem.debit(account, "AAA", 50) end
   end
 
   test "User should be able to transfer money to another account", %{
