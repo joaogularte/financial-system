@@ -54,7 +54,7 @@ defmodule FinancialSystem do
 
   @spec do_deposit(Account.t(), number()) :: Account.t()
   defp do_deposit(%Account{} = account, value) do
-    amount = account.amount + value
+    amount = Decimal.add(account.amount, value)
     %{account | amount: amount}
   end
 
