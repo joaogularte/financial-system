@@ -33,7 +33,7 @@ defmodule FinancialSystem do
   @spec has_funds?(%Account{name: String.t(), email: String.t(), amount: String.t()}, number()) ::
           boolean()
   def has_funds?(%Account{} = account, value) do
-    account.amount >= value
+    account.amount >= Decimal.cast(value)
   end
 
   @spec is_positive(number()) :: boolean()
