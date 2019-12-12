@@ -14,17 +14,17 @@ defmodule Currency do
   ## Examples 
       Currency.list()
   """
-  @spec list() :: map()
+  @spec list() :: map() | RuntimeError
   def list() do
     Agent.start_link(fn -> %{} end, name: __MODULE__)
 
     case do_list() do
       :ok -> Agent.get(__MODULE__, fn state -> state end)
-      {:error} -> raise "Unable to get currency list from the server"
+      {:error} -> raise "unable to get currency list from the server"
     end
   end
 
-  @spec do_list() :: map()
+  @spec do_list() :: map() | {:error}
   defp do_list() do
     case get("/list?access_key=#{@access_key}") do
       {:ok, response} ->
@@ -40,17 +40,17 @@ defmodule Currency do
   ## Examples
       Currency.rate()
   """
-  @spec rate() :: map()
+  @spec rate() :: map() | RuntimeError
   def rate() do
     Agent.start_link(fn -> %{} end, name: __MODULE__)
 
     case do_rate() do
       :ok -> Agent.get(__MODULE__, fn state -> state end)
-      {:error} -> raise "Unable to get currency rate from the server"
+      {:error} -> raise "unable to get currency rate from the server"
     end
   end
 
-  @spec do_rate() :: map()
+  @spec do_rate() :: map() | {:error}
   defp do_rate() do
     case get("/live?access_key=#{@access_key}&format=1") do
       {:ok, response} ->
