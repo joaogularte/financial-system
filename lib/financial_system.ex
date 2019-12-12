@@ -97,7 +97,7 @@ defmodule FinancialSystem do
   @spec do_debit(Account.t(), true, String.t(), number()) :: Account.t()
   defp do_debit(%Account{} = account, same_currency = true, currency, value) do
     case has_funds?(account, value) do
-      true -> %{account | amount: Decimal.sub(account.amount, value)} 
+      true -> %{account | amount: Decimal.sub(account.amount, value)}
       false -> raise "account with insuficient funds"
     end
   end

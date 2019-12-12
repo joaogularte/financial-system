@@ -51,7 +51,7 @@ defmodule FinancialSystemTest do
   end
 
   test "User should be able to debit money into the account", %{account1: account} do
-    assert FinancialSystem.debit(account, 50) == %Account{
+    assert FinancialSystem.debit(account, "BRL", 50) == %Account{
              amount: Decimal.cast(450),
              currency: "BRL",
              email: "carlos@gmail",
@@ -59,7 +59,9 @@ defmodule FinancialSystemTest do
            }
   end
 
-  test "User should be able to debit money into the account with different currency", %{account1: account} do
+  test "User should be able to debit money into the account with different currency", %{
+    account1: account
+  } do
     assert FinancialSystem.debit(account, "USD", 15)
   end
 
@@ -69,9 +71,10 @@ defmodule FinancialSystemTest do
     assert_raise RuntimeError, fn -> FinancialSystem.debit(account, "BRL", 600) end
   end
 
-  test "User should not be able to debit money into the account with insuficient funds in different currency", %{
-    account1: account
-  } do
+  test "User should not be able to debit money into the account with insuficient funds in different currency",
+       %{
+         account1: account
+       } do
     assert_raise RuntimeError, fn -> FinancialSystem.debit(account, "USD", 600) end
   end
 
