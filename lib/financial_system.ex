@@ -38,7 +38,7 @@ defmodule FinancialSystem do
   @spec has_funds?(%Account{name: String.t(), email: String.t(), amount: String.t()}, number()) ::
           boolean()
   def has_funds?(%Account{} = account, value) do
-    account.amount >= Decimal.cast(value)
+    Enum.member?([:gt, :eq], Decimal.cmp(account.amount, value))
   end
 
   @spec is_positive(number()) :: boolean()
