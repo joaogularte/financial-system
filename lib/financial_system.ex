@@ -59,7 +59,7 @@ defmodule FinancialSystem do
 
   @spec do_deposit(Account.t(), number()) :: Account.t()
   defp do_deposit(%Account{} = account, value) do
-    amount = Decimal.add(account.amount, value)
+    amount = Decimal.add(account.amount, Decimal.cast(value))
     %{account | amount: amount}
   end
 
@@ -144,17 +144,19 @@ defmodule FinancialSystem do
       Enum.map(
         accounts_list,
         fn account ->
-          amount = percent_number(value, account[:percentage])
-          deposit(account[:to_account], amount)
+          ratio =
+            value
+            |> Decimal.cast()
+            |> Decimal.mult(account[:percentage])
+            |> Decimal.div(100)
+            |> Decimal.round(2)
+            |> Decimal.to_float()
+
+          deposit(account[:to_account], ratio)
         end
       )
 
     %{from_account: debited_account, accounts_list: deposited_accounts}
-  end
-
-  @spec percent_number(number(), number()) :: number()
-  defp percent_number(number, percent) when is_positive(number) and is_positive(percent) do
-    div(number * percent, 100)
   end
 
   @doc """
@@ -170,8 +172,9 @@ defmodule FinancialSystem do
   @spec complete_percentage?(list()) :: boolean()
   def complete_percentage?(accounts_list) when is_list(accounts_list) do
     Enum.reduce(accounts_list, 0, fn account, total_percent ->
-      account[:percentage] + total_percent
-    end) == 100
+      Decimal.add(account[:percentage], total_percent)
+    end)
+    |> Decimal.equal?(100)
   end
 
   @doc """
