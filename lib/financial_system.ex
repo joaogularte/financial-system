@@ -63,13 +63,13 @@ defmodule FinancialSystem do
   end
 
   @spec do_deposit(Account.t(), true, String.t(), number()) :: Account.t()
-  defp do_deposit(%Account{} = account, same_currency = true, currency, value) do
+  defp do_deposit(%Account{} = account, _same_currency = true, _currency, value) do
     amount = Decimal.add(account.amount, Decimal.cast(value))
     %{account | amount: amount}
   end
 
   @spec do_deposit(Account.t(), false, String.t(), number()) :: Account.t()
-  defp do_deposit(%Account{} = account, same_currency = false, currency, value) do
+  defp do_deposit(%Account{} = account, _same_currency = false, currency, value) do
     amount =
       exchange(currency, account.currency, value)
       |> Decimal.add(account.amount)
@@ -95,7 +95,7 @@ defmodule FinancialSystem do
   end
 
   @spec do_debit(Account.t(), true, String.t(), number()) :: Account.t()
-  defp do_debit(%Account{} = account, same_currency = true, currency, value) do
+  defp do_debit(%Account{} = account, _same_currency = true, _currency, value) do
     case has_funds?(account, value) do
       true -> %{account | amount: Decimal.sub(account.amount, value)}
       false -> raise "account with insuficient funds"
@@ -103,7 +103,7 @@ defmodule FinancialSystem do
   end
 
   @spec do_debit(Account.t(), false, String.t(), number()) :: Account.t()
-  defp do_debit(%Account{} = account, same_currency = false, currency, value) do
+  defp do_debit(%Account{} = account, _same_currency = false, currency, value) do
     with value <- exchange(currency, account.currency, value),
          true <- has_funds?(account, value) do
       amount = Decimal.sub(account.amount, value)
