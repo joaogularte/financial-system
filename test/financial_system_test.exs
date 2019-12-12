@@ -15,6 +15,12 @@ defmodule FinancialSystemTest do
     assert FinancialSystem.create_account("João Vitor", "joao@gmail.com", "BRL")
   end
 
+  test "Can not create an account without correct informations" do
+    assert_raise ArgumentError, fn ->
+      FinancialSystem.create_account("João Vitor", "joao@gmail.com", "BRL", "AAA")
+    end
+  end
+
   test "Check if account has funds", %{account1: account} do
     assert FinancialSystem.has_funds?(account, 200) == true
   end
