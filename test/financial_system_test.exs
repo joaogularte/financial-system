@@ -1,5 +1,5 @@
 defmodule FinancialSystemTest do
-  use ExUnit.Case 
+  use ExUnit.Case
   doctest FinancialSystem
 
   setup do
@@ -26,7 +26,7 @@ defmodule FinancialSystemTest do
   end
 
   test "User should be able to deposit money into the account", %{account1: account} do
-    assert FinancialSystem.deposit(account, 50) == %Account{
+    assert FinancialSystem.deposit(account, "BRL", 50) == %Account{
              amount: Decimal.cast(550),
              currency: "BRL",
              email: "carlos@gmail",
@@ -39,13 +39,15 @@ defmodule FinancialSystemTest do
   } do
     assert FinancialSystem.deposit(account, "USD", 50)
   end
+
   test "User should not be able to deposit money into the account with invalid currency", %{
     account1: account
   } do
     assert_raise ArgumentError, fn -> FinancialSystem.deposit(account, "AAA", 50) end
   end
+
   test "User should not be able to deposit negative values into the account", %{account1: account} do
-    assert_raise FunctionClauseError, fn -> FinancialSystem.deposit(account, -50) end
+    assert_raise FunctionClauseError, fn -> FinancialSystem.deposit(account, "BRL", -50) end
   end
 
   test "User should be able to debit money into the account", %{account1: account} do
@@ -60,7 +62,7 @@ defmodule FinancialSystemTest do
   test "User should not be able to debit money into the account with insuficient funds", %{
     account1: account
   } do
-    assert_raise RuntimeError, fn -> IO.inspect FinancialSystem.debit(account, 600) end
+    assert_raise RuntimeError, fn -> (FinancialSystem.debit(account, 600)) end
   end
 
   test "User should be able to transfer money to another account", %{
