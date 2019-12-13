@@ -67,13 +67,37 @@ ${accounts_list: accounts, from_account: from_account} = FinancialSystem.split(a
 
 #cambio entre valores monetarios
 rate = FinancialSystem.exchange("BRL", "USD", 10)
+
 ```
+## Documentação
+
+Através da execução do comando `mix docs` é possível ter acesso a documentação das funções disponiveis no projeto.
 
 ## Testes
 
+O projeto disponibiliza testes de unidade e de cobertura.
+
+Para rodar os testes de unidade basta executar o comando `mix test` na pasta raiz do projeto. Com o comando `MIX_ENV=test mix coveralls` é executado o teste de cobertura. Caso deseje uma visão mais detalhada, é possível gerar o relatório de cobertura de testes com o comando `MIX_ENV=test mix coveralls.html`. O relatorio estara disponivel no arquivo `cover/excoveralls.html`.
+
+## Padronização do estilo do código
+
+O comando `mix format` é usado para auto formatar e garantir que o código esteja com os padrões da linguagem.  
 
 
 ## Controle de Qualidade
 
+Para manter a qualidade do código duas ferramentas são utilizadas:
+
 * Integração Contínua - [CircleCI](https://circleci.com/gh/joaogularte/financial-system)
 * Teste de cobertura - [ExCoveralls](https://coveralls.io/github/joaogularte/financial-system?branch=master)
+
+### Material utilizado como referência
+
+[Elixir School](https://elixirschool.com/pt/)
+[Elixir - Introduction to Mix](https://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html#running-tests)
+[Melhores Práticas na StoneCo](https://github.com/stone-payments/stoneco-best-practices/blob/master/README_pt.md)
+[O Guia de Estilo Elixir](https://github.com/gusaiani/elixir_style_guide/blob/master/README_ptBR.md)
+[Using CircleCI for Continuous Integration of Elixir projects](https://www.erlang-solutions.com/blog/using-circleci-for-continuous-integration-of-elixir-projects.html)
+[currencylayer API](https://currencylayer.com/documentation)
+[Decimal](https://hexdocs.pm/decimal/readme.html)
+
