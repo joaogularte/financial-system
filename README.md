@@ -4,7 +4,7 @@ Projeto desenvolvido com a linguagem de programação Elixir para o desafio da S
 
 ## Sobre
 
-O principal objetivo deste projeto é prover conjunto de ferramentas para realizar operações financeiras, tais como: débito, deposito, transferencia, split de transações e por fim câmbio entre valores monetários. Todas estas operações estão em compliance com a [ISO 4217](https://pt.wikipedia.org/wiki/ISO_4217). 
+O principal objetivo deste projeto é prover um conjunto de ferramentas para realizar operações financeiras, tais como: débito, deposito, transferencia, split de transações e por fim câmbio entre valores monetários. Todas estas operações estão em compliance com a [ISO 4217](https://pt.wikipedia.org/wiki/ISO_4217). 
 
 ## Dependências
 
@@ -93,11 +93,11 @@ Para manter a qualidade do código duas ferramentas são utilizadas:
 
 ### Material utilizado como referência
 
-[Elixir School](https://elixirschool.com/pt/)
-[Elixir - Introduction to Mix](https://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html#running-tests)
-[Melhores Práticas na StoneCo](https://github.com/stone-payments/stoneco-best-practices/blob/master/README_pt.md)
-[O Guia de Estilo Elixir](https://github.com/gusaiani/elixir_style_guide/blob/master/README_ptBR.md)
-[Using CircleCI for Continuous Integration of Elixir projects](https://www.erlang-solutions.com/blog/using-circleci-for-continuous-integration-of-elixir-projects.html)
-[currencylayer API](https://currencylayer.com/documentation)
-[Decimal](https://hexdocs.pm/decimal/readme.html)
+- [Elixir School](https://elixirschool.com/pt/)
+- [Elixir - Introduction to Mix](https://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html#running-tests)
+- [Melhores Práticas na StoneCo](https://github.com/stone-payments/stoneco-best-practices/blob/master/README_pt.md)
+- [O Guia de Estilo Elixir](https://github.com/gusaiani/elixir_style_guide/blob/master/README_ptBR.md)
+- [Using CircleCI for Continuous Integration of Elixir projects](https://www.erlang-solutions.com/blog/using-circleci-for-continuous-integration-of-elixir-projects.html)
+- [currencylayer API](https://currencylayer.com/documentation)
+- [Decimal](https://hexdocs.pm/decimal/readme.html)
 
